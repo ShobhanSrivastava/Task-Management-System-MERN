@@ -1,21 +1,24 @@
 export default function Priority(props){
-    let color = 'white-500';
-
-    const priority = props.priority;
-
-    if(priority == 'High'){
-        color = 'red-600';
+    if(props.priority == 'High'){
+        return (
+            <div className={`border-rose-500 border-[1px] rounded-md my-2 h-fit w-fit`} >
+                <p className={`text-rose-500 font-mono bold font-semibold text-xs mx-3 my-1`}>{props.priority}</p>
+            </div>
+        );
     }
-    else if(priority == 'Medium'){
-        color = 'yellow-400';
+    else if(props.priority == 'Medium'){
+        return (
+            <div className={`border-yellow-500 border-[1px] rounded-md my-2 h-fit w-fit`} >
+                <p className={`text-yellow-500 font-mono bold font-semibold text-xs mx-3 my-1`}>{props.priority}</p>
+            </div>
+        );
     }
-    else if(priority == 'Low'){
-        color = 'green-400';
+    else if(props.priority == 'Low'){
+        return (
+            <div className={`border-green-500 border-[1px] rounded-md my-2 h-fit w-fit`} >
+                <p className={`text-green-500 font-mono bold font-semibold text-xs mx-3 my-1`}>{props.priority}</p>
+            </div>
+        );
     }
-
-    return (
-        <div className={`border-${color} border-2 rounded-md m-1 h-fit w-fit`} >
-            <p className={`text-${color} font-mono bold font-semibold text-xs mx-3 my-1`}>{priority}</p>
-        </div>
-    );
 }
+

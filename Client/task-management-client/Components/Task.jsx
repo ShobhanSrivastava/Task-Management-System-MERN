@@ -1,14 +1,29 @@
 import Priority from "./Priority";
+import { useState } from "react";
+import UpdateTask from "./UpdateTask";
 
 export default function Task(props){
+    const [show, setShow] = useState(false);
+
+    const notShow = () => {
+        setShow(!show);
+    }
+
     return (
-        <div className="h-24 border-red- border-[0.25px] my-5 mx-8 rounded-lg bg-theme-blue flex flex-col justify-start items-center">
-            <div className="h-2 bg-green-900"></div>
-            <p className="text-white font-mono text-lg">{props.title}</p>
-            <p className="text-white font-mono text-sm">{props.description}</p>
-            <Priority priority='Low' />
+        <div className="bg-theme-blue h-fit my-5 mx-8 rounded-lg drop-shadow-2xl">
+            <div onClick={notShow} className={` cursor-pointer flex flex-col justify-start items-center`}>
+                <p className="text-white font-mono font-semibold my-1 text-lg">{props.title}</p>
+                <p className="text-white font-mono mt-2 text-sm">{props.description}</p>
+                <Priority priority='High'/>
+            </div>
+            <div className="my-2">
+                {
+                    show && <UpdateTask />
+                }
+            </div>
         </div>
     );
 }
 
-// border-slate-500
+
+// border-slate-500 border-[0.25px]
