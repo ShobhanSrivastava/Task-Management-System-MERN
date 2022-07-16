@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 require('dotenv').config();
 
 // PORT = process.env.PORT || 8000
@@ -22,6 +24,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+app.use(cors());
+
 //To fetch all the available tasks
 app.get('/all-tasks', (req, res) => {
     Task.find({}, function(err, foundTasks){
@@ -30,6 +34,22 @@ app.get('/all-tasks', (req, res) => {
             res.send(foundTasks).status(201);
         }
         else{
+            res.send("No tasks found");
+            console.log('Error: ' + err);
+        }
+    })
+})
+
+app.post('/fetch-tasks', (req, res) => {
+    const status = req.body.status;
+    console.log(status);
+    Task.find({status: status}, function(err, foundTasks){
+        if(!err){
+            console.log(foundTasks);
+            res.send(foundTasks).status(201);
+        }
+        else{
+            res.send("No tasks found");
             console.log('Error: ' + err);
         }
     })
@@ -37,26 +57,46 @@ app.get('/all-tasks', (req, res) => {
 
 app.post('/delete', (req, res) => {
     body = req.body;
+    // console.log(status);
 
-    Task.deleteOne({id: body['_id']}, function(err){
+    const { _id , status } = body;
+
+    Task.deleteOne({_id: _id}, function(err){
         if(!err){
-            console.log('Task with _id: '+ body['_id'] + ' deleted successfully!');
+            console.log('Task with _id: '+ _id + ' deleted successfully!');
         }
         else{
             console.log(err);
         }
     })
 
-    res.send('Deleted Succesfully').status(201);
+    Task.find({status: status}, function(err, foundTasks){
+        if(!err){
+            console.log(foundTasks);
+            res.send(foundTasks).status(201);
+        }
+        else{
+            res.send("No tasks found");
+            console.log('Error: ' + err);
+        }
+    })
+
+    // res.send('Deleted Succesfully').status(201);
 })
 
 app.post('/update-task', (req, res) => {
     body = req.body;
 
-    key = body['key'];
-    value = body['value'];
+    const { _id , title , description , status , priority } = body;
 
-    Task.updateOne(body['_id'], {key : value}, function(err) {
+    Task.updateOne({_id: _id}, {
+        $set: {
+            title: title,
+            description: description,
+            priority: priority,
+            status: status
+        }
+    }, function(err) {
         if(!err){
             Task.find({}, function(err, foundTasks){
                 if(!err){
@@ -77,17 +117,20 @@ app.post('/update-task', (req, res) => {
 })
 
 //To insert the task in a particular status and return the new list in that status
-app.post('/insert', (req, res) => {
+app.post('/insert', async (req, res) => {
     body = req.body;
+    console.log(body);
+    const { title, description, status, priority } = body;
+    console.log(title + " " + description + " " + status + " " +  priority);
 
     const task = new Task({
         title: body['title'],
+        description: body['description'],
         priority: body['priority'],
         status: body['status'],
-        category: body['category']
     })
 
-    task.save((err) => {
+    await task.save((err) => {
         if(!err){
             console.log('Inserted Succesfully');
         }

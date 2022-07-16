@@ -11,11 +11,11 @@ export default function AddTaskButton(){
 
     return (
         <div>
-            <div onClick={notShow} className="absolute top-[5rem] right-[3rem] cursor-pointer drop-shadow rounded-full p-4 bg-slate-500">
+            <div onClick={notShow} className="absolute top-[5rem] right-[3rem] cursor-pointer drop-shadow rounded-full p-4 bg-slate-400">
                 <BsPlusLg color='#0F172A' size='25px'/>
             </div>
             {
-                show && <Popup heading="Add New Task" setShow={setShow} className="block"/>
+                show && <Popup buttonText="Add Task" heading="Add New Task" operation="add" setShow={setShow} className="block"/>
             }
         </div>
     );
