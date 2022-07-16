@@ -6,7 +6,7 @@ export default function DateComponent(){
 
     return(
         <div className="flex justify-center w-full font-mono items-center h-[6rem]">
-            <p className="text-white text-4xl">{date}</p>
+            <p className="text-slate-500 text-4xl">{date}</p>
         </div>
     );
 }

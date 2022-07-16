@@ -8,11 +8,12 @@ import TaskHolder from "../Components/TaskHolder";
 export default function Home() {
   return (
   <div className="bg-theme-blue w-full h-max">
-    <AddTaskButton />
     <Navbar />
     <DateComponent />
     <TaskHolder />
     <Footer />
+    <AddTaskButton />
   </div>
   );
 }
+
